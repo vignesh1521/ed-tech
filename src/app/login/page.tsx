@@ -45,12 +45,16 @@ export default function LoginPage() {
             localStorage.setItem('token', token);
             setUser(jwtDecode(token));
             router.push('/dashboard');
-        } catch (err: any) {
-
-            setErrorMessage(err.message || "Something went wrong")
-
-            console.error('Network or GraphQL error:', err);
+        } catch(err: unknown) {
+            if (err instanceof Error) {
+                setErrorMessage(err.message || "Something went wrong");
+                console.error('Network or GraphQL error:', err);
+            } else {
+                setErrorMessage("Something went wrong");
+                console.error('Unknown error:', err);
+            }
         }
+
     };
 
 

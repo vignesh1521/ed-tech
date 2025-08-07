@@ -3,6 +3,7 @@
 import { useAuth } from '@/context';
 import { useRouter, useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import './course.css'
 
 export default function Dashboard() {
@@ -66,7 +67,7 @@ export default function Dashboard() {
         };
 
         fetchCourseById();
-    }, [])
+    }, [params.id])
 
     const enrollUser = async () => {
         const mutation = `
@@ -127,8 +128,8 @@ export default function Dashboard() {
             {
                 course && <div className="max-w-7xl mx-auto p-6">
                     <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-                        <img
-                            src={course.image || '/placeholder.jpg'}
+                        <Image
+                            src={course.image}
                             alt={course.title}
                             className="w-full h-64 object-cover"
                         />

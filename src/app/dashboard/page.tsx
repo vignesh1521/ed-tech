@@ -3,6 +3,7 @@
 import { useAuth } from '@/context';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import './dashboard.css'
 
 export default function Dashboard() {
@@ -67,7 +68,7 @@ export default function Dashboard() {
 
         fetchAllCourses();
 
-    }, [])
+    }, [router])
 
     if (loading) {
         return <p>Loading...</p>;
@@ -107,7 +108,7 @@ export default function Dashboard() {
                     {courses.map((crs, index) => {
                         return (
                             <div className="course-card" key={index}>
-                                <img src={crs.image} alt="Course Image" />
+                                <Image src={crs.image} alt="Course Image" />
                                 <div className="course-content">
                                     <div className="course-title">{crs.title}</div>
                                     <div className="course-level">{crs.level}</div>

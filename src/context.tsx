@@ -30,6 +30,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const decoded: DecodedToken = jwtDecode(token);
         setUser(decoded);
       } catch (error) {
+        console.log(error);
         setUser(null);
       }
     } else {

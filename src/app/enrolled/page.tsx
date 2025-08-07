@@ -3,6 +3,7 @@
 import { useAuth } from '@/context';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import './style.css'
 export default function Dashboard() {
     type Course = {
@@ -13,6 +14,16 @@ export default function Dashboard() {
         image: string;
     };
 
+
+    type Enrollment = {
+  id: string;
+  user: {
+    id: string;
+    email: string;
+    username: string;
+  };
+  course: Course;
+};
     const { user, loading } = useAuth();
     const [courses, setCourses] = useState<Course[]>([])
     const router = useRouter();
@@ -70,7 +81,7 @@ export default function Dashboard() {
                     return;
                 }
 
-                const coursesData = result.data.getUserEnrolledCourses.map((enrollment: any) => enrollment.course);
+                const coursesData = result.data.getUserEnrolledCourses.map((enrollment: Enrollment) => enrollment.course);
                 setCourses(coursesData);
             } catch (err) {
                 console.error('Network or GraphQL error:', err);
@@ -121,7 +132,7 @@ export default function Dashboard() {
                     {courses.map((crs, index) => {
                         return (
                             <div className="course-card" key={index}>
-                                <img src={crs.image} alt="Course Image" />
+                                <Image src={crs.image} alt="Course Image" />
                                 <div className="course-content">
                                     <div className="course-title">{crs.title}</div>
                                     <div className="course-level">{crs.level}</div>

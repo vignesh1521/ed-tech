@@ -2,6 +2,7 @@
 
 import { useRouter, useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { useAuth } from '@/context';
 
 export default function EnrollmentSuccessPage() {
@@ -67,7 +68,7 @@ export default function EnrollmentSuccessPage() {
         };
 
         fetchCourseById();
-    }, [])
+    }, [params.id])
 
     if (!course) {
         return (
@@ -90,7 +91,7 @@ export default function EnrollmentSuccessPage() {
             <p className="mb-6 text-gray-700">You have successfully enrolled in the course below:</p>
 
             <div className="border rounded-lg p-6 shadow-md">
-                <img
+                <Image
                     src={course.image}
                     alt={course.title}
 
