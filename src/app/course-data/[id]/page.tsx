@@ -132,6 +132,7 @@ export default function Dashboard() {
                             src={course.image}
                             alt={course.title}
                             className="w-full h-64 object-cover"
+                            unoptimized 
                         />
 
                         <div className="p-6">

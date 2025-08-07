@@ -108,7 +108,7 @@ export default function Dashboard() {
                     {courses.map((crs, index) => {
                         return (
                             <div className="course-card" key={index}>
-                                <Image src={crs.image} alt="Course Image" />
+                                <Image src={crs.image} alt="Course Image" unoptimized  />
                                 <div className="course-content">
                                     <div className="course-title">{crs.title}</div>
                                     <div className="course-level">{crs.level}</div>

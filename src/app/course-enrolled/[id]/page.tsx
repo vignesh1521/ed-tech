@@ -94,8 +94,8 @@ export default function EnrollmentSuccessPage() {
                 <Image
                     src={course.image}
                     alt={course.title}
-
                     className="w-full h-64 object-cover"
+                    unoptimized 
                 />
                 <h2 className="text-2xl font-semibold">{course.title}</h2>
                 <p className="text-gray-600 mt-2">{course.description}</p>
