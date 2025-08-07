@@ -65,7 +65,7 @@ export default function Dashboard() {
             };
 
             try {
-                const response = await fetch('http://localhost:4000/graphql', {
+                const response = await fetch('https://ed-tech-server-nine.vercel.app/api/graphql', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
