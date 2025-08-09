@@ -34,6 +34,7 @@ export default function Dashboard() {
                     query{
                     getCourses {
                     id
+                    title
                     level
                     description
                     image   
