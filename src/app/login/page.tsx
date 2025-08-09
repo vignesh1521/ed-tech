@@ -26,7 +26,7 @@ export default function LoginPage() {
         const variables = { email: email, password };
 
         try {
-            const response = await fetch('https://ed-tech-server-nine.vercel.app/api/graphql', {
+            const response = await fetch('/api/graphql', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -42,7 +42,7 @@ export default function LoginPage() {
             }
 
             const token = result.data.login;
-            localStorage.setItem('token', token);
+            localStorage.   setItem('token', token);
             setUser(jwtDecode(token));
             router.push('/dashboard');
         } catch(err: unknown) {

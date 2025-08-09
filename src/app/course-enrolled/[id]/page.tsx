@@ -41,10 +41,10 @@ export default function EnrollmentSuccessPage() {
                     }
                 }
                 `;
-            const variables = { id: params.id };
+            const variables = { id: params?.id };
 
             try {
-                const response = await fetch('https://ed-tech-server-nine.vercel.app/api/graphql', {
+                const response = await fetch('/api/graphql', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -68,7 +68,7 @@ export default function EnrollmentSuccessPage() {
         };
 
         fetchCourseById();
-    }, [params.id])
+    }, [params?.id])
 
     if (!course) {
         return (
@@ -96,6 +96,7 @@ export default function EnrollmentSuccessPage() {
                     alt={course.title}
                     className="w-full h-64 object-cover"
                     unoptimized 
+                    width={100} height={100}
                 />
                 <h2 className="text-2xl font-semibold">{course.title}</h2>
                 <p className="text-gray-600 mt-2">{course.description}</p>

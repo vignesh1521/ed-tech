@@ -65,7 +65,7 @@ export default function Dashboard() {
             };
 
             try {
-                const response = await fetch('https://ed-tech-server-nine.vercel.app/api/graphql', {
+                const response = await fetch('/api/graphql', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -132,7 +132,7 @@ export default function Dashboard() {
                     {courses.map((crs, index) => {
                         return (
                             <div className="course-card" key={index}>
-                                <Image src={crs.image} alt="Course Image" unoptimized  />
+                                <Image src={crs.image} alt="Course Image" unoptimized  width={100} height={100} />
                                 <div className="course-content">
                                     <div className="course-title">{crs.title}</div>
                                     <div className="course-level">{crs.level}</div>
@@ -146,8 +146,6 @@ export default function Dashboard() {
                             </div>
                         );
                     })}
-
-
                 </div>
             </div>
 
