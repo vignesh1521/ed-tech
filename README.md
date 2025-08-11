@@ -1,36 +1,102 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+---
 
-## Getting Started
+# Ed-Tech Platform
 
-First, run the development server:
+A full-stack **Ed-Tech** platform built with **Next.js** and **TypeScript** on the frontend, and a **GraphQL API** backend.
+The platform allows users to browse, enroll in, and track online courses with a seamless and responsive interface.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## 🚀 Features
+
+* **User Authentication** – Login functionality for students and admins.
+* **Course Management** – View, enroll, and track courses.
+* **Dashboard** – Personalized user dashboard for enrolled courses.
+* **GraphQL API Integration** – Efficient and flexible data fetching.
+* **Dynamic Routing** – Handles course details and enrollment pages.
+
+---
+
+## 📂 Project Structure
+
+```
+src/
+│
+├── app/
+│   ├── course-data/[id]       # Dynamic course data pages (via GraphQL queries)
+│   ├── course-enrolled        # Enrolled course listing
+│   ├── dashboard              # User dashboard
+│   ├── enrolled               # List of enrolled courses
+│   ├── login                  # Authentication pages
+│   ├── favicon.ico            # App icon
+│   ├── globals.css            # Global styles
+│   ├── layout.tsx             # Root layout component
+│   └── page.tsx               # Home page
+│
+├── lib/                       # Helper functions / GraphQL utilities
+│
+├── pages/api/                 # API routes (serverless GraphQL integrations)
+│
+├── context.tsx                # Context API setup
+├── eslint.config.mjs          # ESLint configuration
+├── next.config.ts             # Next.js configuration
+├── package.json               # Dependencies and scripts
+├── postcss.config.mjs         # PostCSS configuration
+├── README.md                  # Project documentation
+└── tsconfig.json              # TypeScript configuration
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠️ Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+* **Next.js** – React framework for SSR & SSG.
+* **TypeScript** – Strongly typed JavaScript.
+* **GraphQL** – Backend API query language.
+* **Apollo Client** – For consuming GraphQL APIs in the frontend.
+* **PostCSS** – CSS transformations.
+* **ESLint** – Code linting.
+* **Context API** – State management.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 📦 Installation & Setup
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Clone the repository:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   ```bash
+   git clone <repo-url>
+   cd <repo-folder>
+   ```
 
-## Deploy on Vercel
+2. Install dependencies:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   ```bash
+   npm install
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+3. Run the development server:
+
+   ```bash
+   npm run dev
+   ```
+
+4. Open the app:
+
+   ```
+   http://localhost:3000
+   ```
+
+---
+
+## 🔑 Sample Credentials
+
+For testing purposes:
+
+```
+Admin: admin@1 / admin123
+User:  user@1  / user123
+Test:  test@123 / test123
+```
+
+---
