@@ -1,0 +1,184 @@
+.popular {
+    position: relative;
+    background-color: #fff;
+    border-radius: 20px;
+    max-width: 380px;
+    padding: 50px 30px;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    transition: all .3s ease-in-out;
+
+}
+
+.confetti {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    display: none;
+}
+
+
+.popular:hover {
+    transform: scale(1.07);
+    box-shadow: -5px 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+.save {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+
+}
+
+.save .save_icon {
+    stroke: #1743e0db;
+    fill: none;
+    stroke-width: 40px;
+    background: #cadbffbd;
+    border-radius: 100%;
+    width: 40px;
+
+}
+
+.popular_deatils .tag {
+    display: inline-block;
+    padding: 15px 20px;
+}
+
+.popular_deatils .tag div {
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
+    border-radius: 12px;
+    color: #2d5affdb;
+    padding: 1px 5px;
+    background-color: #cadbffbd;
+}
+
+.data {
+    border-left: 7px solid #ff7722;
+    padding: 5px 15px;
+}
+
+.data h2 {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.data .admin_edit {
+    position: relative;
+}
+
+.data .admin_edit svg {
+    position: absolute;
+    top: 0;
+    right: -10;
+}
+
+.data p {
+    font-size: 14px;
+    color: #666;
+}
+
+.seperator {
+    padding: 10 20;
+}
+
+.price div {
+    padding: 2px 0;
+}
+
+.ratings {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+}
+
+.ratings svg {
+    fill: #ff7722;
+    padding: 3px;
+    width: 26px;
+}
+
+.price_data {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+}
+
+.price_data div {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.price_data s {
+    font-size: 14px;
+    color: #666;
+}
+
+.price_con {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: last baseline;
+}
+
+.price_con button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background-color: rgb(245, 200, 39);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 5px 20px;
+    border-radius: 20px;
+    box-shadow: 0px 10px 10px rgba(255, 245, 45, 0.2);
+}
+.price_con .enroll_btn .active{
+    background-color: rgb(246, 227, 158);
+    box-shadow: 0px 10px 10px rgba(247, 244, 177, 0.2);
+
+}
+
+.price_con button svg {
+    width: 20px;
+    padding: 0px;
+    margin-top: 7px;
+}
+
+
+.seperator {
+    padding: 30px 0px
+}
+
+.seperator span {
+    display: block;
+    width: 60%;
+    height: 1px;
+    background: #66666648;
+    margin: auto;
+}
+
+@media (max-width:550px) {
+    .popular:hover {
+        transform: scale(1.0);
+        box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+
+    }
+
+    .data h2 {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .data .admin_edit svg {
+        right: -20;
+    }
+
+
+}

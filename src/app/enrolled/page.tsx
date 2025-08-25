@@ -1,5 +1,5 @@
 'use client';
-
+//depricated
 import { useAuth } from '@/context';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -24,17 +24,11 @@ export default function Dashboard() {
   };
   course: Course;
 };
-    const { user, loading } = useAuth();
+    const { user } = useAuth();
     const [courses, setCourses] = useState<Course[]>([])
     const router = useRouter();
 
 
-
-    useEffect(() => {
-        if (!loading && !user) {
-            router.push('/login');
-        }
-    }, [user, loading, router]);
 
 
     useEffect(() => {
@@ -88,15 +82,12 @@ export default function Dashboard() {
             }
         };
 
-        if (!loading && user?.id) {
+        if (user?.id) {
             fetchUserEnrolledCourses();
         }
-    }, [user, loading]);
+    }, [user]);
 
 
-    if (loading) {
-        return <p>Loading...</p>;
-    }
 
     return (
         <>

@@ -1,5 +1,5 @@
 'use client';
-
+//depricated
 import { useAuth } from '@/context';
 import { useRouter, useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -14,19 +14,11 @@ export default function Dashboard() {
         description: string;
         image: string;
     };
-    const { user, loading } = useAuth();
+    const { user } = useAuth();
     const [course, setCourse] = useState<Course | null>(null)
     const [reload, setReload] = useState(1)
-
     const router = useRouter();
     const params = useParams();
-
-
-    useEffect(() => {
-        if (!loading && !user) {
-            router.push('/login');
-        }
-    }, [user, loading, router]);
 
 
     useEffect(() => {
@@ -156,10 +148,7 @@ export default function Dashboard() {
     }
 
 
-    if (loading) {
-        return <p>Loading..</p>;
-    }
-
+  
     return (
         <>
             <div className='header'>

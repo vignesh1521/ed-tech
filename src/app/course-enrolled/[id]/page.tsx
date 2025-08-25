@@ -1,5 +1,5 @@
 'use client';
-
+//depricated
 import { useRouter, useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
@@ -16,16 +16,8 @@ export default function EnrollmentSuccessPage() {
         description: string;
         image: string;
     };
-    const { user, loading } = useAuth();
+    const { user } = useAuth();
     const params = useParams();
-
-
-    useEffect(() => {
-        if (!loading && !user) {
-            router.push('/login');
-        }
-    }, [user, loading, router]);
-
 
     useEffect(() => {
         const fetchCourseById = async () => {

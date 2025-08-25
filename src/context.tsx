@@ -5,7 +5,7 @@ import { jwtDecode } from 'jwt-decode';
 type DecodedToken = {
   id: string;
   username: string;
-  email:string;
+  email: string;
   role: string;
   exp?: number;
 };
@@ -13,7 +13,7 @@ type DecodedToken = {
 type AuthContextType = {
   user: DecodedToken | null;
   setUser: (user: DecodedToken | null) => void;
-  loading: boolean;
+
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -34,15 +34,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(null);
       }
     } else {
-      setUser(null); 
+      setUser(null);
     }
 
-    setLoading(false); 
+    setLoading(false);
   }, []);
 
+  if (loading) { }
 
   return (
-    <AuthContext.Provider value={{ user, setUser, loading }}>
+    <AuthContext.Provider value={{ user, setUser }}>
       {children}
     </AuthContext.Provider>
   );

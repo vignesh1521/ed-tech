@@ -5,46 +5,46 @@ import bcrypt from 'bcryptjs';
 import { secret, requireAuth } from './auth';
 import { Context_Type, Course_Type, Enrollment_Type, User_Type } from "./types";
 
-const courses: Course_Type[] = [
+let courses: Course_Type[] = [
     {
         id: '1',
         title: "Data Structures and Algorithms in C++",
-        description: "Master the fundamentals of data structures and algorithms using C++. Perfect for beginners aiming to build a strong programming foundation.",
+        description: "Master the fundamentals of data structures and algorithms using C++.",
         level: "Beginner",
         image: "https://dme2wmiz2suov.cloudfront.net/User(91065251)/CourseBundles(47896)/3368275-C__.jpg"
     },
     {
         id: '2',
         title: "Digital Marketing Advanced",
-        description: "Explore advanced strategies in SEO, social media, email marketing, and analytics to become a proficient digital marketer.",
+        description: "Explore advanced strategies in SEO, social media, email marketing, and analytics.",
         level: "Advanced",
         image: "https://dme2wmiz2suov.cloudfront.net/User(91065251)/CourseBundles(47903)/3368646-DM.jpeg"
     },
     {
         id: '3',
         title: "UI/UX Design",
-        description: "Learn the essentials of user interface and user experience design, including wireframing, prototyping, and design thinking principles.",
+        description: "Learn the essentials of user interface and user experience design, including wireframing, prototyping.",
         level: "Beginner",
         image: "https://dme2wmiz2suov.cloudfront.net/User(91065251)/CourseBundles(47904)/3368666-UIUX.png"
     },
     {
         id: '4',
         title: "Artificial Intelligence (English)",
-        description: "Understand the core concepts of AI, machine learning, and neural networks, with hands-on examples and real-world applications.",
+        description: "Understand the core concepts of AI, machine learning, and neural networks, with hands-on examples.",
         level: "Intermediate",
         image: "https://dme2wmiz2suov.cloudfront.net/User(91065251)/CourseBundles(48278)/3409489-images.jpeg"
     },
     {
         id: '5',
         title: "IOT",
-        description: "Dive into the Internet of Things and learn how smart devices communicate, collect, and share data in real-time.",
+        description: "Dive into the IOT and learn how smart devices communicate, collect, and share data in real-time.",
         level: "Beginner",
         image: "https://dme2wmiz2suov.cloudfront.net/User(91065251)/CourseBundles(48287)/3410681-iot.jpg"
     },
     {
         id: '6',
         title: "Cyber Security & Ethical Hacking",
-        description: "Gain hands-on knowledge of cyber threats, ethical hacking techniques, and how to protect systems from unauthorized access.",
+        description: "Gain hands-on knowledge of cyber threats, ethical hacking techniques.",
         level: "Intermediate",
         image: "https://dme2wmiz2suov.cloudfront.net/User(91065251)/CourseBundles(48304)/3412487-CS_photo.png"
     }
@@ -84,8 +84,10 @@ export const typeDefs = gql`
   type Mutation {
     login(email: String!, password: String!): String
     createCourse(title: String!): Course
-    enrollUserInCourse(courseId: ID!): Enrollment
+    enrollUser(courseId: ID!): Enrollment
     updateCourseTitle(courseId: ID! , CourseTitle: String!) : Course
+    addNewCourse(courseTitle: String!, imageUrl:String! , description:String!,level:String!): [Course]
+    deleteCourse(CourseId : ID!):[Course]
   }
 `;
 
@@ -126,45 +128,60 @@ export const resolvers = {
         },
 
 
-        enrollUserInCourse: requireAuth((_: unknown, { courseId }: { courseId: string }, { user, CourseEnrolled }: Context_Type) => {
+        enrollUser: requireAuth((_: unknown, { courseId }: { courseId: string }, { user, CourseEnrolled }: Context_Type) => {
             if (!user) {
                 throw new Error("Authentication required");
             }
+
+
+               console.log(CourseEnrolled);
 
             const course = courses.find(c => c.id == courseId);
             if (!course) {
                 throw new Error("Course not found");
             }
-
             const alreadyEnrolled = CourseEnrolled.find(e => e.user.id == user.id && e.course.id == courseId);
             if (alreadyEnrolled) {
                 throw new Error("User already enrolled in this course");
             }
 
             const enrollment = {
-                id: String(CourseEnrolled.length + 1),
+                id: String(Number(CourseEnrolled[CourseEnrolled.length - 1]) >= 0 ? Number(CourseEnrolled[CourseEnrolled.length - 1].id) + 1 : 0),
                 user,
                 course
             };
             CourseEnrolled.push(enrollment);
+
             return enrollment;
         }),
 
-        updateCourseTitle:requireAuth ((_: unknown, { courseId, CourseTitle }: { courseId: string; CourseTitle: string }, { user }: Context_Type) => {
+        updateCourseTitle: requireAuth((_: unknown, { courseId, CourseTitle }: { courseId: string; CourseTitle: string }, { user }: Context_Type) => {
             const crs = courses.find(c => c.id == courseId) || null
             if (user?.role !== 'admin') {
                 throw new Error('Access denied');
             }
-
             if (!crs) {
                 return null
             }
-
             crs.title = CourseTitle
             console.log(crs);
             return crs
-        })
+        }),
 
+        addNewCourse: (_: unknown, { courseTitle, imageUrl, description, level }: { courseTitle: string, imageUrl: string, description: string, level: string }) => {
+            courses.push({
+                id: String(Number(courses[courses.length - 1].id) + 1),
+                title: courseTitle,
+                image: imageUrl,
+                description,
+                level
+            })
+            return courses
+        },
+        deleteCourse: (_: unknown, { CourseId }: { CourseId: string }) => {
+            courses = courses.filter(crc => crc.id != CourseId);
+            return courses
+        }
     }
 };
 

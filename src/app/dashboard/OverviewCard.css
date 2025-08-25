@@ -1,0 +1,211 @@
+
+.course_con {
+    overflow-x: hidden;
+}
+
+.course_overview {
+    padding: 10px;
+
+
+}
+
+.course_overview h1 {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.overview_con {
+    display: flex;
+    margin-top: 20px;
+    flex-wrap: nowrap;
+    gap: 20px;
+    padding: 10px;
+    padding-left: 20px;
+    padding-bottom: 20px;
+    overflow: scroll;
+}
+
+.overview {
+    position: relative;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+    background: #fff;
+    padding: 20px 40px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    transition: color 0.4s ease-in-out;
+    min-width: 300px;
+}
+
+.overview::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, #060044, #7c440c);
+    opacity: 0;
+    transition: all .8s ease;
+    border-radius: 20px;
+    z-index: 0;
+}
+
+.overview:hover::before {
+    color: #fff;
+    opacity: 1;
+
+}
+
+.overview * {
+    position: relative;
+    z-index: 1;
+}
+
+
+.overview .overview_title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+
+.overview .overview_title .title p {
+    font-size: 14px;
+    color: #666;
+    transition: all 0.4s ease-in-out;
+
+}
+
+.overview .overview_title .title h2 {
+    font-weight: bold;
+    transition: all 0.4s ease-in-out;
+
+}
+
+.overview .overview_title .number {
+    color: #ff7722;
+    background: #ff7f5f3e;
+    padding: 8px 10px;
+    border-radius: 100%;
+    font-weight: bold;
+}
+
+.overview .overview_details {
+    display: flex;
+    justify-content: right;
+}
+
+.overview .overview_details svg {
+    padding: 0px;
+    width: 20px;
+}
+
+.overview .overview_details p {
+    font-size: 13.5px;
+    cursor: pointer;
+    transition: all 0.4s ease-in-out;
+
+}
+
+.overview:hover {
+    transform: scale(1.05);
+    box-shadow: -10px 10px 10px rgba(0, 0, .1, 0.2);
+
+}
+
+.overview:hover .overview_title .title h2 {
+    color: #fff;
+}
+
+.overview:hover .overview_title .title p {
+    color: #fff;
+}
+
+.overview:hover svg path {
+    stroke: #fff;
+    fill: #fff;
+
+}
+
+.overview:hover .overview_title .number {
+    background: #fff;
+    color: black;
+}
+
+.overview:hover .overview_details p {
+    color: #fff;
+}
+
+@media (max-width: 1163px) {
+    .overview {
+        width: calc((100% / 2) - 20px);
+    }
+}
+
+@media (max-width: 880px) {
+    .overview {
+        margin: auto;
+        width: 90%
+    }
+}
+
+@media (max-width: 800px) {
+    .overview_con {
+        margin-top: 10px;
+    }
+
+    .search_box {
+        flex-basis: 60%;
+    }
+}
+
+
+@media (max-width: 600px) {
+    .main2 {
+        padding: 10px;
+    }
+
+    .header {
+        padding: 10px;
+    }
+
+    .menu_container {
+        padding: 5px;
+    }
+
+    .courses_data {
+        padding: 0 20px;
+    }
+
+    .course_overview {
+        padding: 0;
+    }
+
+    .overview_con {
+        margin-top: 5px;
+    }
+
+    .overview {
+        width: 90%;
+        margin: initial;
+        padding: 20px;
+    }
+
+    .search_box {
+        flex-basis: 80%;
+    }
+
+    .header_icons svg:nth-child(1),
+    .header_icons svg:nth-child(2) {
+        display: none;
+    }
+}
+
+@media (max-width:450px) {
+    .courses_data {
+        padding: 0 15px;
+    }
+    .overview_con {
+        padding: 8px;
+    }
+}
