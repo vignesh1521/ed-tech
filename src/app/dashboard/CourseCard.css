@@ -73,8 +73,8 @@
 
 .data .admin_edit svg {
     position: absolute;
-    top: 0;
-    right: -10;
+    top: 0px;
+    right: -10px;
 }
 
 .data p {
@@ -83,11 +83,11 @@
 }
 
 .seperator {
-    padding: 10 20;
+    padding: 10px 20px;
 }
 
 .price div {
-    padding: 2px 0;
+    padding: 2px 0px;
 }
 
 .ratings {
@@ -177,7 +177,7 @@
     }
 
     .data .admin_edit svg {
-        right: -20;
+        right: -20px;
     }
 
 
