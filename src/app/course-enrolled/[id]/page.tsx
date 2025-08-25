@@ -3,7 +3,6 @@
 import { useRouter, useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { useAuth } from '@/context';
 
 export default function EnrollmentSuccessPage() {
     const router = useRouter();
@@ -16,7 +15,6 @@ export default function EnrollmentSuccessPage() {
         description: string;
         image: string;
     };
-    const { user } = useAuth();
     const params = useParams();
 
     useEffect(() => {

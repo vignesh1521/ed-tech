@@ -48,7 +48,8 @@ export default function LoginPage() {
             const token = result.data.login;
             localStorage.setItem('token', token);
             setUser(jwtDecode(token));
-            router.push('/dashboard');
+            window.open('/dashboard')
+            router.push('/ai-dashboard');
         } catch (err: unknown) {
             if (err instanceof Error) {
                 setErrorMessage(err.message || "Something went wrong");
