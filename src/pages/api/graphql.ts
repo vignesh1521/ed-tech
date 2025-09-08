@@ -1,8 +1,9 @@
 import { ApolloServer, AuthenticationError } from "apollo-server-micro";
 import jwt from "jsonwebtoken";
-import { typeDefs, resolvers, users } from "../../lib/schema";
-import { CourseEnrolled } from "../../lib/users";
+import { typeDefs, resolvers } from "../../lib/schema";
+import { users, CourseEnrolled } from "../../lib/users";
 import { secret } from "../../lib/auth";
+
 import { Token_Type } from "@/lib/types";
 import { NextApiRequest, NextApiResponse } from "next";
 

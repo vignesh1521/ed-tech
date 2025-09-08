@@ -1,32 +1,10 @@
 import { gql } from 'apollo-server-micro';
-import { CourseEnrolled } from './users';
+import { users, CourseEnrolled } from './users';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { secret, requireAuth } from './auth';
 import { Context_Type, Course_Type, Enrollment_Type, User_Type } from "./types";
-export const users: User_Type[] = [
-  {
-    id: '1',
-    email: "admin@1",
-    username: "admin",
-    password: bcrypt.hashSync("admin123", 10),
-    role: "admin"
-  },
-  {
-    id: '2',
-    email: "user@1",
-    username: "john",
-    password: bcrypt.hashSync("user123", 10),
-    role: "user"
-  },
-  {
-    id: '3',
-    email: "test@123",
-    username: "robert",
-    password: bcrypt.hashSync("test123", 10),
-    role: "user"
-  }
-];
+
 
 let courses: Course_Type[] = [
     {
@@ -95,10 +73,10 @@ export const typeDefs = gql`
   type User {
     id: ID!
     email: String!
-    password:String!
     username: String!
     role: String!
   }
+
 
   type Course {
     id: ID!
@@ -109,7 +87,6 @@ export const typeDefs = gql`
     price : Int!
     status : String!
   }
-
 
 
   type Enrollment {
@@ -127,7 +104,7 @@ export const typeDefs = gql`
 
   type Mutation {
     login(email: String!, password: String!): String
-    signup(email: String!, username: String!, password: String!): String
+    signup(email: String!, username: String!, password: String!): [User]
     createCourse(title: String!): Course
     enrollUser(courseId: ID!): Enrollment
     updateCourseTitle(courseId: ID! , CourseTitle: String!) : Course
@@ -181,14 +158,12 @@ export const resolvers = {
                 id: String(users.length + 1),
                 email,
                 username,
-                password:bcrypt.hashSync(password, 10),
+                password: bcrypt.hashSync(password, 10),
                 role: "user",
             };
 
             users.push(newUser);
-            console.log(users);
-            return jwt.sign({ id: newUser.id, username: newUser.username, email: newUser.email, role: newUser.role }, secret, { expiresIn: '1h' });
-
+            return users
 
         },
 

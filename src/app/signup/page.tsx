@@ -17,19 +17,20 @@ export default function Signup() {
     const [name, setName] = useState('');
     const [loading, setloading] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
-    const { setUser } = useAuth();
+    const [successMessage, SetsuccessMessage] = useState(false)
     const handleSubmit = async (e: React.FormEvent) => {
         setloading(true)
         e.preventDefault();
         const query = `
             mutation($email: String!, $username: String!, $password: String!){
-        signup(email: $email, username: $username, password: $password)          
+        signup(email: $email, username: $username, password: $password) {
+        id}         
         
         
         }
         `;
 
-        const variables = { email: email, password : password, username: name };
+        const variables = { email: email, password: password, username: name };
 
         try {
             const response = await fetch('/api/graphql', {
@@ -47,17 +48,15 @@ export default function Signup() {
                 setloading(false)
                 return;
             }
-
-            const token = result.data.signup;
-            localStorage.setItem('token', token);
-            setUser(jwtDecode(token));
-            router.push('/dashboard');
+            SetsuccessMessage(true)
+            setTimeout(() => {
+                router.push('/login');
+            }, 1000);
         } catch (err: unknown) {
             if (err instanceof Error) {
                 setErrorMessage(err.message || "Something went wrong");
                 console.error('Network or GraphQL error:', err);
                 setloading(false)
-
             } else {
                 setErrorMessage("Something went wrong");
                 console.error('Unknown error:', err);
@@ -75,7 +74,15 @@ export default function Signup() {
             <div className="form login_form">
                 <form onSubmit={handleSubmit}>
                     <h2>Sign Up</h2>
-
+                    {
+                        successMessage ?
+                            <div className='success_msg'>
+                                <i className="uil uil-check-circle text-green-600 text-1xl"></i>
+                                <p>Sign-up Success.</p>
+                            </div>
+                            :
+                            <></>
+                    }
                     {errorMessage ?
                         <div className='err_msg'>
                             <i className="uil uil-exclamation-triangle text-red-600 text-1xl"></i>
