@@ -25,6 +25,16 @@
 *{
   color: black;
   scrollbar-width: none;
+      user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+button,a,div{
+    text-decoration: none;
+ 
+    -webkit-tap-highlight-color: transparent; 
 }
 
 body {

@@ -113,7 +113,7 @@ export default function Signup() {
                             loading ? <div className="loader_black"></div> : "Sign Up"
                         }
                     </button>
-                    <div className="login_signup">Already have an account? <a onClick={() => router.push("/login")} id="signup">login</a></div>
+                    <div className="login_signup">Already have an account? <a onClick={() => router.push("/login")} id="signup">Login</a></div>
                 </form>
             </div>
         </div>

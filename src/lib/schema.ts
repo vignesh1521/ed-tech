@@ -73,6 +73,7 @@ export const typeDefs = gql`
   type User {
     id: ID!
     email: String!
+    password:String!
     username: String!
     role: String!
   }
@@ -122,7 +123,7 @@ export const resolvers = {
                 throw new Error('Access denied');
             }
 
-            return users.map((u: User_Type) => ({ id: u.id, email: u.email, username: u.username, role: u.role }));
+            return users
         }),
         getCourses: requireAuth(() => courses),
 
@@ -158,7 +159,7 @@ export const resolvers = {
                 id: String(users.length + 1),
                 email,
                 username,
-                password: bcrypt.hashSync(password, 10),
+                password:bcrypt.hashSync(password, 10),
                 role: "user",
             };
             users.push(newUser);

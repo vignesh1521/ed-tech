@@ -188,14 +188,16 @@ export default function CourseDetails() {
           <div className="page">
             <canvas id="canva" className="confetti"></canvas>
             <div className="banner">
-              <Image
-                src={imgSrc}
-                alt={course?.title || 'Course image'}
+
+              <img
+                src={course?.image}
+                alt={course?.title}
                 width={1200}
                 height={400}
-                onError={() => {
-                  setImgSrc(`https://placehold.co/1200x400/png?text=${encodeURIComponent(course?.title || 'Image not found')}`);
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).src = `https://placehold.co/1200x400/png?text=${encodeURIComponent(course?.title || 'Image Not Found')}`;
                 }}
+                style={{ objectFit: 'cover' }}
               />
             </div>
 

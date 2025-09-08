@@ -91,6 +91,7 @@
 
 .form_container a:hover {
   text-decoration: underline;
+  cursor: pointer;
 }
 
 .checkbox {
