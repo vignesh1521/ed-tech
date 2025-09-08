@@ -76,7 +76,7 @@ export default function LoginPage() {
                     {errorMessage ?
                         <div className='err_msg'>
                             <i className="uil uil-exclamation-triangle text-red-600 text-1xl"></i>
-                            <p>user not found</p>
+                            <p>{errorMessage}</p>
                         </div>
                         :
                         <></>
