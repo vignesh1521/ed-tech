@@ -162,7 +162,9 @@ export const resolvers = {
                 password:bcrypt.hashSync(password, 10),
                 role: "user",
             };
+
             users.push(newUser);
+            console.log(users);
             return jwt.sign({ id: newUser.id, username: newUser.username, email: newUser.email, role: newUser.role }, secret, { expiresIn: '1h' });
 
 
