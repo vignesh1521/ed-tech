@@ -6,14 +6,15 @@ import { useAuth } from '@/context';
 import { jwtDecode } from 'jwt-decode';
 
 
-import './login.css'
+import './signup.css'
 
 
-export default function LoginPage() {
+export default function Signup() {
 
     const router = useRouter();
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [name, setName] = useState('');
     const [loading, setloading] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
     const { setUser } = useAuth();
@@ -21,12 +22,14 @@ export default function LoginPage() {
         setloading(true)
         e.preventDefault();
         const query = `
-        mutation Login($email: String!, $password: String!) {
-        login(email: $email, password: $password)
+            mutation($email: String!, $username: String!, $password: String!){
+        signup(email: $email, username: $username, password: $password)          
+        
+        
         }
         `;
 
-        const variables = { email: email, password };
+        const variables = { email: email, password : password, username: name };
 
         try {
             const response = await fetch('/api/graphql', {
@@ -45,7 +48,7 @@ export default function LoginPage() {
                 return;
             }
 
-            const token = result.data.login;
+            const token = result.data.signup;
             localStorage.setItem('token', token);
             setUser(jwtDecode(token));
             router.push('/dashboard');
@@ -71,16 +74,22 @@ export default function LoginPage() {
         <div className="form_container">
             <div className="form login_form">
                 <form onSubmit={handleSubmit}>
-                    <h2>Login</h2>
+                    <h2>Sign Up</h2>
 
                     {errorMessage ?
                         <div className='err_msg'>
                             <i className="uil uil-exclamation-triangle text-red-600 text-1xl"></i>
-                            <p>user not found</p>
+                            <p>{errorMessage}</p>
                         </div>
                         :
                         <></>
                     }
+                    <div className="input_box">
+                        <input type="text" placeholder="Enther your name"
+                            value={name}
+                            onChange={e => setName(e.target.value)} required />
+                        <i className="uil uil-user email"></i>
+                    </div>
                     <div className="input_box">
                         <input type="email" placeholder="Enter your email"
                             value={email}
@@ -98,14 +107,13 @@ export default function LoginPage() {
                             <input type="checkbox" id="check" />
                             <label htmlFor="check">Remember me</label>
                         </span>
-                        <a href="#" className="forgot_pw">Forgot password?</a>
                     </div>
                     <button className="button">
                         {
-                            loading ? <div className="loader_black"></div> : "Login Now"
+                            loading ? <div className="loader_black"></div> : "Sign Up"
                         }
                     </button>
-                    <div className="login_signup">Don&apos;t have an account? <a onClick={()=>router.push("/signup")} id="signup">Signup</a></div>
+                    <div className="login_signup">Already have an account? <a onClick={() => router.push("/login")} id="signup">login</a></div>
                 </form>
             </div>
         </div>

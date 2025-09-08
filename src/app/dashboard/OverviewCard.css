@@ -1,4 +1,3 @@
-
 .course_con {
     overflow-x: hidden;
 }
@@ -60,14 +59,38 @@
     z-index: 1;
 }
 
+.overview_con .active {
+    background: linear-gradient(120deg, #060044, #7c440c);
+
+}
+
+.overview_con .active * {
+    color: #ffff;
+}
+
+.overview_con .active .overview_title .title p {
+    color: #fff;
+}
+
+.overview_con .active svg path {
+    stroke: #fff;
+    fill: #fff;
+}
+
+.overview_con .active .overview_title .number {
+    background: #fff;
+}
+
+.overview_con .active .overview_title .number p {
+    color: black;
+    
+}
 
 .overview .overview_title {
     display: flex;
     align-items: center;
     gap: 10px;
 }
-
-
 
 .overview .overview_title .title p {
     font-size: 14px;
@@ -83,11 +106,19 @@
 }
 
 .overview .overview_title .number {
-    color: #ff7722;
+    position: relative;
     background: #ff7f5f3e;
-    padding: 8px 10px;
+    padding: 20px;
     border-radius: 100%;
     font-weight: bold;
+}
+
+.overview .overview_title .number p {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    color: #ff7722;
 }
 
 .overview .overview_details {
@@ -110,7 +141,6 @@
 .overview:hover {
     transform: scale(1.05);
     box-shadow: -10px 10px 10px rgba(0, 0, .1, 0.2);
-
 }
 
 .overview:hover .overview_title .title h2 {
@@ -124,9 +154,9 @@
 .overview:hover svg path {
     stroke: #fff;
     fill: #fff;
-
 }
 
+.overview:hover .overview_title .number p,
 .overview:hover .overview_title .number {
     background: #fff;
     color: black;
@@ -135,6 +165,8 @@
 .overview:hover .overview_details p {
     color: #fff;
 }
+
+
 
 @media (max-width: 1163px) {
     .overview {
@@ -205,6 +237,7 @@
     .courses_data {
         padding: 0 15px;
     }
+
     .overview_con {
         padding: 8px;
     }

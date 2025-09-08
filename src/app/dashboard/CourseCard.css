@@ -1,12 +1,3 @@
-.confetti {
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 100%;
-    display: none;
-}
-
 .popular {
     position: relative;
     background-color: #fff;
@@ -17,6 +8,7 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
     transform: translateY(0);
+    width: 100%;
 }
 
 
@@ -49,19 +41,69 @@
     padding: 15px 20px;
 }
 
+.popular_deatils .tag {
+    display: flex;
+    flex-direction: row;
+    gap: 2px;
+}
+
 .popular_deatils .tag div {
     font-size: 11px;
     font-weight: 600;
     text-align: center;
     border-radius: 12px;
-    color: #2d5affdb;
     padding: 1px 5px;
+}
+
+.weak {
+    color: #2d5affdb;
     background-color: #cadbffbd;
 }
 
+.enrolled {
+    background: #8B5CF6;
+    color: white;
+
+}
+
+.upcoming {
+    color: #a37010db;
+    background-color: #ffeacabd;
+}
+
+.ongoing {
+    color: #0c5460;
+    background-color: #d1ecf1;
+}
+
+
+.completed {
+    color: #155724;
+    background-color: #d4edda;
+}
+
+.canceled {
+    color: #721c24;
+    background-color: #f8d7da;
+}
+
 .data {
-    border-left: 7px solid #ff7722;
     padding: 5px 15px;
+}
+
+.beginner {
+    border-left: 7px solid #0cbd0f;
+
+}
+
+.intermediate {
+    border-left: 7px solid #ece10d;
+
+}
+
+.advanced {
+    border-left: 7px solid #ff7722;
+
 }
 
 .data h2 {
@@ -142,12 +184,6 @@
     box-shadow: 0px 10px 10px rgba(255, 245, 45, 0.2);
 }
 
-.price_con .enroll_btn .active {
-    background-color: rgb(246, 227, 158);
-    box-shadow: 0px 10px 10px rgba(247, 244, 177, 0.2);
-
-}
-
 .price_con button svg {
     width: 20px;
     padding: 0px;
@@ -167,12 +203,36 @@
     margin: auto;
 }
 
-@media (max-width:550px) {
-    .popular:hover {
-        transform: scale(1.0);
-        box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+@media (max-width: 1161px) {
 
+    .popular {
+        max-width: 420px;
     }
+}
+
+@media (max-width: 1000px) {
+    .popular {
+        max-width: 380px;
+    }
+}
+
+@media (max-width: 751px) {
+    .popular {
+        padding: 30px 20px;
+    }
+}
+
+@media (max-width: 700px) {
+
+    .popular {
+        padding: 30px 20px;
+    }
+
+
+}
+
+@media (max-width:550px) {
+
 
     .data h2 {
         font-size: 20px;

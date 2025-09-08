@@ -2,19 +2,15 @@
 
 import { useAuth } from '@/context';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import './dashboard.css'
 import CourseCard from './CourseCard';
 import OverviewCard from './OverviewCard';
+import AddCourseCard from './AddCourseCard';
+import { Course_Type } from '@/lib/types';
 
 export default function Dashboard() {
-    type Course = {
-        id: string;
-        title: string;
-        level: string;
-        description: string;
-        image: string;
-    };
+
     type Enrollment = {
         id: string;
         user: {
@@ -22,16 +18,22 @@ export default function Dashboard() {
             email: string;
             username: string;
         };
-        course: Course;
+        course: Course_Type;
     };
     const { user } = useAuth();
-    const [courses, setCourses] = useState<Course[]>([])
+    const [courses, setCourses] = useState<Course_Type[]>([])
     const [coursesEnrolled, setCoursesEnrolled] = useState<string[]>([]);
     const [reload, setReload] = useState(1)
     const [loading, setLoading] = useState(true)
-    const [activeMenu, setActiveMenu] = useState("home")
-    const router = useRouter();
+    const [searchTerm, setSearchTerm] = useState('');
+    // const [activeMenu, setActiveMenu] = useState("home")
+    const [menu, setMenu] = useState(false);
+    const [notify, setNotify] = useState(false);
+    const [lang, setLang] = useState(false);
 
+    const [activeCard, setActiveCard] = useState<string>("upcoming")
+    const [courseCard, openCourseCard] = useState(false)
+    const router = useRouter();
 
 
     useEffect(() => {
@@ -46,6 +48,8 @@ export default function Dashboard() {
                     level
                     description
                     image   
+                    price
+                    status
                 }
                 }`;
 
@@ -77,8 +81,6 @@ export default function Dashboard() {
                 console.error('Network or GraphQL error:', err);
             }
         };
-
-
 
 
         const fetchUserEnrolledCourses = async () => {
@@ -135,22 +137,56 @@ export default function Dashboard() {
                 await setLoading(false);
             }
             loadData();
-
-
         }
 
-    }, [router, user , reload])
+    }, [router, user, reload])
 
-    function handleMenu(active_menu: string) {
-        setActiveMenu(active_menu);
-    }
+
+    useEffect(() => {
+        const page = document.getElementById('main2');
+
+        function handleClick(event: MouseEvent) {
+            const clickedElement = event.target as HTMLElement;
+            const classNames = clickedElement.classList;
+            if (lang && !classNames.contains('language_drop ') && !classNames.contains('language_flag') && !classNames.contains('lang_span')) {
+                setLang(false)
+            } else if (!lang && classNames.contains('lang_icon')) {
+                setLang(true)
+            }
+
+            if (notify && !classNames.contains('msg')) {
+                setNotify(false)
+            }
+            else if (!notify && classNames.contains('notification_icon') || classNames.contains('notification')) {
+                setNotify(true)
+            }
+
+            if (menu && !classNames.contains('log_out') && !classNames.contains('logout_icon')) {
+                console.log("object");
+                setMenu(false)
+            }
+            else if (!menu && classNames.contains('menu_click')) {
+                console.log("2object");
+                setMenu(true)
+            }
+        }
+
+        page?.addEventListener('click', handleClick);
+
+        return () => {
+            page?.removeEventListener('click', handleClick);
+        };
+    }, [menu, notify, lang]);
+
+
+    // function handleMenu(active_menu: string) {
+    //     setActiveMenu(active_menu);
+    // }
 
     return (
         <>
-
-            <>
-                <div className='main2'>
-                    <div className='menu_options'>
+            <div className='main2' id='main2'>
+                {/* <div className='menu_options'>
                         <div className='menu_container'>
                             <div className='icon_logo'>
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" >
@@ -310,30 +346,94 @@ export default function Dashboard() {
 
                             </div>
                         </div>
-                    </div>
-                    <div className='course_con'>
-                        <div className="dashboard">
-                            <div className='header'>
-                                <div className='search_box'>
-                                    <input type="search" placeholder='Search Something....' />
-                                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0px" y="0px" viewBox="0 0 100 125" ><path d="M89.4,87.5L69.5,67.6c12.2-13.2,11.9-33.7-0.9-46.6c-6.6-6.6-15.2-9.8-23.7-9.8s-17.2,3.3-23.7,9.8C8,34.2,8,55.5,21.1,68.6  c6.6,6.6,15.2,9.8,23.7,9.8c8.2,0,16.4-3,22.8-8.9l19.9,19.9c0.3,0.3,0.6,0.4,0.9,0.4c0.3,0,0.7-0.1,0.9-0.4  C89.9,88.9,89.9,88,89.4,87.5z M44.8,75.8c-8.3,0-16.1-3.2-21.9-9.1c-12.1-12.1-12.1-31.8,0-43.8c5.9-5.9,13.6-9.1,21.9-9.1  s16.1,3.2,21.9,9.1c12.1,12.1,12.1,31.8,0,43.8C60.9,72.6,53.1,75.8,44.8,75.8z" /></svg>
-                                </div>
-                                <div className='header_icons'>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" className='menu_icon'>
-                                        <path d="M119.7 263.7L150.6 294.6C156.6 300.6 164.7 304 173.2 304L194.7 304C203.2 304 211.3 307.4 217.3 313.4L246.6 342.7C252.6 348.7 256 356.8 256 365.3L256 402.8C256 411.3 259.4 419.4 265.4 425.4L278.7 438.7C284.7 444.7 288.1 452.8 288.1 461.3L288.1 480C288.1 497.7 302.4 512 320.1 512C337.8 512 352.1 497.7 352.1 480L352.1 477.3C352.1 468.8 355.5 460.7 361.5 454.7L406.8 409.4C412.8 403.4 416.2 395.3 416.2 386.8L416.2 352.1C416.2 334.4 401.9 320.1 384.2 320.1L301.5 320.1C293 320.1 284.9 316.7 278.9 310.7L262.9 294.7C258.7 290.5 256.3 284.7 256.3 278.7C256.3 266.2 266.4 256.1 278.9 256.1L313.6 256.1C326.1 256.1 336.2 246 336.2 233.5C336.2 227.5 333.8 221.7 329.6 217.5L309.9 197.8C306 194 304 189.1 304 184C304 178.9 306 174 309.7 170.3L327 153C332.8 147.2 336.1 139.3 336.1 131.1C336.1 123.9 333.7 117.4 329.7 112.2C326.5 112.1 323.3 112 320.1 112C224.7 112 144.4 176.2 119.8 263.7zM528 320C528 285.4 519.6 252.8 504.6 224.2C498.2 225.1 491.9 228.1 486.7 233.3L473.3 246.7C467.3 252.7 463.9 260.8 463.9 269.3L463.9 304C463.9 321.7 478.2 336 495.9 336L520 336C522.5 336 525 335.7 527.3 335.2C527.7 330.2 527.8 325.1 527.8 320zM64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320z" />
+                    </div> */}
+                <div className='course_con'>
+                    <div className="dashboard">
+                        <div className='header'>
+                            <div className='search_box'>
+                                <input type="search" placeholder='Search Something....' onChange={e => setSearchTerm(e.target.value)} />
+                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0px" y="0px" viewBox="0 0 100 125" >
+                                    <path d="M89.4,87.5L69.5,67.6c12.2-13.2,11.9-33.7-0.9-46.6c-6.6-6.6-15.2-9.8-23.7-9.8s-17.2,3.3-23.7,9.8C8,34.2,8,55.5,21.1,68.6  c6.6,6.6,15.2,9.8,23.7,9.8c8.2,0,16.4-3,22.8-8.9l19.9,19.9c0.3,0.3,0.6,0.4,0.9,0.4c0.3,0,0.7-0.1,0.9-0.4  C89.9,88.9,89.9,88,89.4,87.5z M44.8,75.8c-8.3,0-16.1-3.2-21.9-9.1c-12.1-12.1-12.1-31.8,0-43.8c5.9-5.9,13.6-9.1,21.9-9.1  s16.1,3.2,21.9,9.1c12.1,12.1,12.1,31.8,0,43.8C60.9,72.6,53.1,75.8,44.8,75.8z" /></svg>
+                            </div>
+                            <div className='header_icons'>
+
+                                <div className='language menu'>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" className='lang_icon menu_icon'>
+                                        <path className='lang_icon' d="M119.7 263.7L150.6 294.6C156.6 300.6 164.7 304 173.2 304L194.7 304C203.2 304 211.3 307.4 217.3 313.4L246.6 342.7C252.6 348.7 256 356.8 256 365.3L256 402.8C256 411.3 259.4 419.4 265.4 425.4L278.7 438.7C284.7 444.7 288.1 452.8 288.1 461.3L288.1 480C288.1 497.7 302.4 512 320.1 512C337.8 512 352.1 497.7 352.1 480L352.1 477.3C352.1 468.8 355.5 460.7 361.5 454.7L406.8 409.4C412.8 403.4 416.2 395.3 416.2 386.8L416.2 352.1C416.2 334.4 401.9 320.1 384.2 320.1L301.5 320.1C293 320.1 284.9 316.7 278.9 310.7L262.9 294.7C258.7 290.5 256.3 284.7 256.3 278.7C256.3 266.2 266.4 256.1 278.9 256.1L313.6 256.1C326.1 256.1 336.2 246 336.2 233.5C336.2 227.5 333.8 221.7 329.6 217.5L309.9 197.8C306 194 304 189.1 304 184C304 178.9 306 174 309.7 170.3L327 153C332.8 147.2 336.1 139.3 336.1 131.1C336.1 123.9 333.7 117.4 329.7 112.2C326.5 112.1 323.3 112 320.1 112C224.7 112 144.4 176.2 119.8 263.7zM528 320C528 285.4 519.6 252.8 504.6 224.2C498.2 225.1 491.9 228.1 486.7 233.3L473.3 246.7C467.3 252.7 463.9 260.8 463.9 269.3L463.9 304C463.9 321.7 478.2 336 495.9 336L520 336C522.5 336 525 335.7 527.3 335.2C527.7 330.2 527.8 325.1 527.8 320zM64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320z" />
                                     </svg>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" className='menu_icon'>
+                                    {
+                                        lang ? <div className='language_drop ' id='language_drop'>
+                                            <div className='language_flag'>
+                                                <span className='lang_span'>🇺🇸</span>
+                                                <span className='lang_span'>English</span>
+                                            </div>
+                                        </div> : <></>
+                                    }
+
+                                </div>
+
+
+
+                                <div className='notification menu'>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" className='notification_icon menu_icon'>
                                         <path d="M320 64C302.3 64 288 78.3 288 96L288 99.2C215 114 160 178.6 160 256L160 277.7C160 325.8 143.6 372.5 113.6 410.1L103.8 422.3C98.7 428.6 96 436.4 96 444.5C96 464.1 111.9 480 131.5 480L508.4 480C528 480 543.9 464.1 543.9 444.5C543.9 436.4 541.2 428.6 536.1 422.3L526.3 410.1C496.4 372.5 480 325.8 480 277.7L480 256C480 178.6 425 114 352 99.2L352 96C352 78.3 337.7 64 320 64zM258 528C265.1 555.6 290.2 576 320 576C349.8 576 374.9 555.6 382 528L258 528z" />
                                     </svg>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" >
-                                        <path d="M463 448.2C440.9 409.8 399.4 384 352 384L288 384C240.6 384 199.1 409.8 177 448.2C212.2 487.4 263.2 512 320 512C376.8 512 427.8 487.3 463 448.2zM64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320zM320 336C359.8 336 392 303.8 392 264C392 224.2 359.8 192 320 192C280.2 192 248 224.2 248 264C248 303.8 280.2 336 320 336z" />
+                                    {
+                                        notify ? <div className='notify_drop ' id='notify_drop'>
+                                            <div className='msg'>
+                                                No Notification Found
+                                            </div>
+                                        </div> : <></>
+                                    }
+
+                                </div>
+
+                                <div className='menu'>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" className='menu_click'>
+                                        <path className='menu_click' d="M463 448.2C440.9 409.8 399.4 384 352 384L288 384C240.6 384 199.1 409.8 177 448.2C212.2 487.4 263.2 512 320 512C376.8 512 427.8 487.3 463 448.2zM64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320zM320 336C359.8 336 392 303.8 392 264C392 224.2 359.8 192 320 192C280.2 192 248 224.2 248 264C248 303.8 280.2 336 320 336z" />
                                     </svg>
+                                    {
+                                        menu ?
+                                            <div className='menu_drop' id='menu_drop'>
+                                                <div className="user-info">
+                                                    <div className="user-avatar">{user?.username[0].toUpperCase()}</div>
+                                                    <div className="user-details">
+                                                        <h4>{user?.username}</h4>
+                                                        <p>{user?.email}</p>
+                                                    </div>
+                                                </div>
+                                                <div className='log_out' onClick={()=>{localStorage.removeItem('token');router.push('/login')}}>
+                                                    <svg className="logout_icon" viewBox="0 0 24 24">
+                                                        <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z" />
+                                                    </svg>
+                                                    Log Out
+                                                </div>
+                                            </div> :
+                                            <></>
+                                    }
                                 </div>
                             </div>
+                        </div>
+                        {searchTerm.trim() !== '' ?
+                            <>
+                                <div className='popular_courses course_overview'>
+                                    <h1>Search result for &quot;{searchTerm}&quot;</h1>
+                                    <div className='popular_con'>
+                                        {
+                                            courses.filter((course) =>
+                                                course.title.toLowerCase().includes(searchTerm.toLowerCase())).map((course, index) => (
+                                                    <CourseCard
+                                                        key={index}
+                                                        element={{ ...course, index, setReload, coursesEnrolled }}
+                                                    />
+                                                ))
+                                        }
+                                    </div>
+                                </div>
+                            </> :
                             <div className='courses_data'>
                                 <div className='course_overview'>
-                                    <h1>Courses Overview</h1>
-                                    <OverviewCard />
+                                    <OverviewCard setActiveCard={setActiveCard} activeCard={activeCard} courses={courses} coursesEnrolled={coursesEnrolled} />
                                 </div>
                                 <div className='popular_courses course_overview'>
                                     <h1>Popular Courses</h1>
@@ -341,24 +441,62 @@ export default function Dashboard() {
                                         {
                                             loading ? <div className="loading" style={{ marginTop: "150px" }}></div> :
                                                 <>
-                                                    {courses.map((course, index) => {
-                                                        const active = coursesEnrolled.includes(course.id)
-                                                        return <CourseCard key={index} element={{ ...course, index, active, setReload  }} />
-                                                    })}
+                                                    {
+
+                                                        (() => {
+                                                            switch (activeCard) {
+                                                                case "upcoming":
+                                                                    return (courses.map((course, index) => {
+                                                                        if (course.status.toLocaleLowerCase() == "upcoming")
+                                                                            return <CourseCard key={index} element={{ ...course, index, setReload, coursesEnrolled }} />
+                                                                    }))
+                                                                case "enrolled":
+                                                                    return (courses.map((course, index) => {
+                                                                        if ((course.status.toLocaleLowerCase() == "ongoing" && coursesEnrolled.includes(course.id)) || (course.status.toLocaleLowerCase() == "upcoming" && coursesEnrolled.includes(course.id)))
+                                                                            return <CourseCard key={index} element={{ ...course, index, setReload, coursesEnrolled }} />
+                                                                    }))
+                                                                case "completed":
+                                                                    return (courses.map((course, index) => {
+                                                                        if (course.status.toLocaleLowerCase() == "completed" && coursesEnrolled.includes(course.id))
+                                                                            return <CourseCard key={index} element={{ ...course, index, setReload, coursesEnrolled }} />
+                                                                    }))
+                                                                case "total":
+                                                                    return (courses.map((course, index) => {
+
+                                                                        return <CourseCard key={index} element={{ ...course, index, setReload, coursesEnrolled }} />
+                                                                    }))
+                                                            }
+                                                        })()
+
+                                                    }
+                                                    {
+                                                        user?.role == "admin" ? <div className='popular add_card_con'>
+                                                            <div className="add_card" onClick={() => openCourseCard(true)}>
+                                                                <span className="plus">+</span>
+                                                                <span className="text">Add New Course</span>
+                                                            </div>
+                                                        </div> : <></>
+                                                    }
                                                 </>
                                         }
 
                                     </div>
+
                                 </div>
                             </div>
-                        </div>
+                        }
                     </div>
                 </div>
-
-
-            </>
-
-
+            </div>
+            {
+                courseCard ?
+                    <>
+                        <AddCourseCard courseCard={openCourseCard} setCourses={setCourses} courses={courses} />
+                    </>
+                    :
+                    <>
+                    </>
+            }
         </>
     )
 }

@@ -12,6 +12,8 @@ export interface Course_Type {
   description: string;
   level: string;
   image: string;
+  price:number;
+  status:string;
 }
 
 export interface Enrollment_Type {

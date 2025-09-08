@@ -1,0 +1,148 @@
+.page {
+  min-height: 100vh;
+}
+
+.page .banner {
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+}
+
+.page .banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.page .container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+
+.page .title {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.description {
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+.highlights {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 20px;
+}
+
+.highlight-box {
+  background: #fff;
+  flex: 1;
+  text-align: center;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.highlight-value {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.highlight-label {
+  font-size: 14px;
+  color: #666;
+}
+
+.right {
+  position: relative;
+}
+
+.purchase-box {
+  background: #fff;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 30px;
+}
+
+.price {
+  font-size: 28px;
+  font-weight: bold;
+  color: #000;
+}
+
+.old-price {
+  text-decoration: line-through;
+  color: #999;
+  font-size: 16px;
+  margin-left: 8px;
+}
+
+.btn {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 15px;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.enroll-btn {
+  background-color: #28a745;
+}
+.disabled{
+  background-color: #00741b67;
+
+}
+
+.edit-btn {
+  background-color: #007bff;
+}
+
+.back-btn {
+  background-color: #dc3545;
+}
+
+
+.guarantee {
+  margin-top: 15px;
+  font-size: 12px;
+  text-align: center;
+  color: #777;
+}
+
+.confetti {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  display: none;
+}
+
+@media (max-width: 800px) {
+  .page .container {
+    grid-template-columns: 1fr;
+  }
+}
