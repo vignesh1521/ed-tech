@@ -136,11 +136,12 @@ export const resolvers = {
     },
 
     Mutation: {
-        login: (_: unknown, { email, password }: User_Type) => {
+        login: async (_: unknown, { email, password }: User_Type) => {
             const user = users.find((u: User_Type) => u.email === email);
             if (!user) throw new Error('User not found');
 
-            const valid = bcrypt.compareSync(password, user.password);
+            const valid = await bcrypt.compare(password, user.password);
+            
             if (!valid) throw new Error('Invalid password');
 
             return jwt.sign({ id: user.id, username: user.username, email: user.email, role: user.role }, secret, { expiresIn: '1h' });
