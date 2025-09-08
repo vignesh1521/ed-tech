@@ -2,7 +2,7 @@
 
 import { useAuth } from '@/context';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import './dashboard.css'
 import CourseCard from './CourseCard';
 import OverviewCard from './OverviewCard';

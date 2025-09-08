@@ -4,7 +4,6 @@ import "./course.css"
 import { useRouter } from 'next/navigation';
 import { useParams } from "next/navigation";
 import confetti from "canvas-confetti";
-import Image from 'next/image';
 import { Course_Type } from "@/lib/types";
 import { useAuth } from "@/context";
 import EditCourseCard from "./EditCourseCard";
@@ -28,7 +27,6 @@ export default function CourseDetails() {
   const [courseCard, openCourseCard] = useState(false)
   const params = useParams();
   const [course, setCourse] = useState<Course_Type | null>(null)
-  const [imgSrc, setImgSrc] = useState(course?.image || '');
 
 
   useEffect(() => {
@@ -87,7 +85,6 @@ export default function CourseDetails() {
         if (!result.data.getCourseById) return router.push('/dashboard')
         setCoursesEnrolled(arr);
         setCourse(result.data.getCourseById)
-        setImgSrc(result.data.getCourseById.image)
         setLoading(false)
 
       } catch (err) {
