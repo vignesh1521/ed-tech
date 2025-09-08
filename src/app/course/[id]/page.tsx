@@ -231,7 +231,7 @@ export default function CourseDetails() {
                   <p className="price">
                     ${course?.price}<span className="old-price">${course?.price ? course.price + Math.floor((course.price) / 100) * 25 : 0} </span>
                   </p>
-                  <button className={coursesEnrolled.includes(course?.id ?? "") ? "btn disabled" : "btn enroll-btn"} onClick={coursesEnrolled.includes(course?.id ?? "") ? () => { } : () => enrollUser()}   >
+                  <button className={coursesEnrolled.includes(course?.id ?? "") || course?.status.toLocaleLowerCase() != "upcoming" ? "btn disabled" : "btn enroll-btn"} onClick={coursesEnrolled.includes(course?.id ?? "") || course?.status.toLocaleLowerCase() != "upcoming" ? () => { } : () => enrollUser()}   >
                     {
                       !loadingBtn ?
                         "Enroll Now"
