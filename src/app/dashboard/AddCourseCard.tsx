@@ -29,16 +29,16 @@ export default function AddCourseCard({ courseCard, setCourses, courses }: AddCo
         if (!title.trim()) {
             setError("Course title is required");
             return;
-        }else if(title.length <3 || title.length >35){
-            setError("Course title requires 3 to 35 characters");
+        }else if(title.length <3 || title.length >100){
+            setError("Course title requires 3 to 100 characters");
             return;
         }
         if (!description.trim()) {
             setError("Course description is required");
             return;
         }
-        else if(description.length <50 || description.length >100){
-            setError("Course description requires 50 to 100 characters");
+        else if(description.length <50 || description.length >150){
+            setError("Course description requires 50 to 150 characters");
             return;
         }
         if (!price || isNaN(Number(price)) || Number(price) <=0) {

@@ -12,9 +12,16 @@ export interface Course_Type {
   description: string;
   level: string;
   image: string;
-  price:number;
-  status:string;
+  price: number;
+  status: string;
 }
+export interface Lesson_Type {
+  id: string;
+  courseId: string;
+  title: string;
+  duration: string; 
+}
+
 
 export interface Enrollment_Type {
   id: string;
@@ -23,16 +30,16 @@ export interface Enrollment_Type {
 }
 
 export interface Token_Type {
-  id: string;        
+  id: string;
   username: string;
   email: string;
-  role: string;      
+  role: string;
 }
 
 
 
 export interface Context_Type {
   user: Token_Type | null;
-  users: User_Type | null;          
-  CourseEnrolled: Enrollment_Type[] ; 
+  users: User_Type | null;
+  CourseEnrolled: Enrollment_Type[];
 }

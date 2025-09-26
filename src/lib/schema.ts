@@ -3,8 +3,7 @@ import { users, CourseEnrolled } from './users';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { secret, requireAuth } from './auth';
-import { Context_Type, Course_Type, Enrollment_Type, User_Type } from "./types";
-
+import { Context_Type, Course_Type, Enrollment_Type, User_Type, Lesson_Type } from "./types";
 
 let courses: Course_Type[] = [
     {
@@ -68,6 +67,26 @@ let courses: Course_Type[] = [
     }
 ];
 
+const lessons: Lesson_Type[] = [
+    { id: '1', courseId: '1', title: "Introduction to Data Structures", duration: "15" },
+    { id: '2', courseId: '1', title: "Arrays and Linked Lists", duration: "22" },
+    { id: '3', courseId: '1', title: "Sorting Algorithms", duration: "25" },
+
+    { id: '4', courseId: '2', title: "Advanced SEO Strategies", duration: "18" },
+    { id: '5', courseId: '2', title: "Social Media Campaigns", duration: "20" },
+
+    { id: '6', courseId: '3', title: "Principles of UI Design", duration: "14" },
+    { id: '7', courseId: '3', title: "Wireframing and Prototyping", duration: "21" },
+
+    { id: '8', courseId: '4', title: "Introduction to AI Concepts", duration: "18" },
+    { id: '9', courseId: '4', title: "Machine Learning Basics", duration: "23" },
+
+    { id: '10', courseId: '5', title: "What is IoT?", duration: "13" },
+    { id: '11', courseId: '5', title: "IoT Protocols and Communication", duration: "19" },
+
+    { id: '12', courseId: '6', title: "Cyber Security Fundamentals", duration: "16" },
+    { id: '13', courseId: '6', title: "Ethical Hacking Techniques", duration: "22" }
+];
 
 export const typeDefs = gql`
   type User {
@@ -88,6 +107,12 @@ export const typeDefs = gql`
     status : String!
   }
 
+   type Lesson {
+    id: ID!
+    courseId: ID!
+    title: String!
+    duration: String!
+    }
 
   type Enrollment {
   id: ID!
@@ -97,6 +122,7 @@ export const typeDefs = gql`
   type Query {
     me: User
     getUsers: [User]
+    getLessonsByCourseId(courseId: ID!): [Lesson]
     getCourses: [Course]
     getCourseById (id : ID!): Course
     getUserEnrolledCourses(id : ID!) : [Enrollment] 
@@ -111,6 +137,9 @@ export const typeDefs = gql`
     addNewCourse(courseTitle: String!, imageUrl:String! ,price:String!,  description:String!,level:String!): Course
     updateCourse(courseId:ID! , courseTitle: String!, imageUrl:String! ,price:String!,  description:String!,level:String! , status : String!): Course
     deleteCourse(CourseId : ID!):[Course]
+    addLesson(courseId: ID!, title: String!, duration: String!): Lesson
+    updateLesson(lessonId: ID!, title: String!, duration: String!): Lesson
+    deleteLesson(lessonId: ID!): [Lesson]
   }
 `;
 
@@ -125,6 +154,10 @@ export const resolvers = {
             return users
         }),
         getCourses: requireAuth(() => courses),
+
+        getLessonsByCourseId: requireAuth((_: unknown, { courseId }: { courseId: string }) => {
+            return lessons.filter(lesson => lesson.courseId === courseId);
+        }),
 
         getUserEnrolledCourses: requireAuth((_: unknown, { id }: { id: string }, { user }: Context_Type) => {
             if (user?.id != id) throw new Error('Access denied');
@@ -141,7 +174,7 @@ export const resolvers = {
             if (!user) throw new Error('User not found');
 
             const valid = await bcrypt.compare(password, user.password);
-            
+
             if (!valid) throw new Error('Invalid password');
 
             return jwt.sign({ id: user.id, username: user.username, email: user.email, role: user.role }, secret, { expiresIn: '1h' });
@@ -238,7 +271,42 @@ export const resolvers = {
         deleteCourse: (_: unknown, { CourseId }: { CourseId: string }) => {
             courses = courses.filter(crc => crc.id != CourseId);
             return courses
-        }
+        },
+
+        addLesson: requireAuth((_: unknown, { courseId, title, duration }: { courseId: string, title: string, duration: string }) => {
+            const newLesson = {
+                id: String(lessons.length + 1),
+                courseId,
+                title,
+                duration
+            };
+
+            lessons.push(newLesson);
+            return newLesson;
+        }),
+
+        updateLesson: requireAuth((_: unknown, { lessonId, title, duration }: { lessonId: string, title: string, duration: string }) => {
+            const lesson = lessons.find(l => l.id === lessonId);
+            if (!lesson) {
+                throw new Error("Lesson not found");
+            }
+
+            lesson.title = title;
+            lesson.duration = duration;
+
+            return lesson;
+        }),
+
+        deleteLesson: requireAuth((_: unknown, { lessonId }: { lessonId: string }) => {
+            const index = lessons.findIndex(l => l.id === lessonId);
+            if (index === -1) {
+                throw new Error("Lesson not found");
+            }
+
+            lessons.splice(index, 1);
+
+            return lessons;
+        }),
     }
 };
 

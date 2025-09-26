@@ -4,9 +4,11 @@ import "./course.css"
 import { useRouter } from 'next/navigation';
 import { useParams } from "next/navigation";
 import confetti from "canvas-confetti";
-import { Course_Type } from "@/lib/types";
+import { Course_Type, Lesson_Type } from "@/lib/types";
 import { useAuth } from "@/context";
 import EditCourseCard from "./EditCourseCard";
+import LessonCard from "./LessonCard";
+import "./LessonCard.css"
 
 type Enrollment = {
   id: string;
@@ -25,12 +27,14 @@ export default function CourseDetails() {
   const { user } = useAuth();
   const router = useRouter();
   const [courseCard, openCourseCard] = useState(false)
+  const [isAdd, setIsAdd] = useState(false)
   const params = useParams();
   const [course, setCourse] = useState<Course_Type | null>(null)
-
+  const [lessons, setLessons] = useState<Lesson_Type[] | null>(null)
+  const [courseTitle, setCourseTitle]=useState('');
+  const [courseDuration , setCourseDuration] = useState('')
 
   useEffect(() => {
-
     const fetchCourseById = async () => {
       if (!user) return;
       setLoading(true)
@@ -50,10 +54,13 @@ export default function CourseDetails() {
                     course {
                         id
                     }
-                
-            }
+                   }
+             
+                getLessonsByCourseId(courseId: ${params?.id}) {
+                id
+                title duration 
                 }
-                          
+              }   
                 `;
       const variables = { id: params?.id };
 
@@ -74,6 +81,10 @@ export default function CourseDetails() {
         if (result.errors) {
           console.error('GraphQL error:', result.errors);
           setLoading(false)
+          if (result.errors[0].code === "UNAUTHENTICATED") {
+            router.push("/login")
+            return
+          }
           return;
         }
         const coursesData = result.data.getUserEnrolledCourses.map((enrollment: Enrollment) => enrollment.course);
@@ -85,7 +96,10 @@ export default function CourseDetails() {
         if (!result.data.getCourseById) return router.push('/dashboard')
         setCoursesEnrolled(arr);
         setCourse(result.data.getCourseById)
+        setLessons(result.data.getLessonsByCourseId);
+
         setLoading(false)
+
 
       } catch (err) {
         console.error('Network or GraphQL error:', err);
@@ -177,6 +191,44 @@ export default function CourseDetails() {
     }
   };
 
+  const addLesson = async () => {
+    const mutation = `
+      mutation addLesson($courseId: ID!, $title: String!, $duration: String!) {
+        addLesson(courseId: $courseId, title: $title, duration: $duration) {
+          id
+          title
+          duration
+        }
+      }
+    `;
+
+    const variables = { courseId: params?.id, title :courseTitle, duration :courseDuration };
+
+    try {
+      const res = await fetch('/api/graphql', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({ query: mutation, variables })
+      });
+
+      const result = await res.json();
+
+      if (result.errors) {
+        console.error(result.errors);
+      } else {
+        const newLesson = result.data.addLesson;
+        
+        return result.data.addLesson;
+      }
+    } catch (error) {
+      console.error('Network error:', error);
+    }
+  };
+
+
   return (
 
     <>
@@ -248,7 +300,38 @@ export default function CourseDetails() {
                 </div>
               </div>
             </div>
-
+           <div style={{display:"none"}} className="lesson_container">
+              <div className="lessons_header">
+                <div className="header_title">Course Lessons</div>
+                <div className="add_btn">
+                  <button onClick={() => setIsAdd(true)}>Add Lesson</button>
+                </div>
+              </div>
+              {
+                isAdd ?
+                  <div className="lesson">
+                    <div className="lesson_info" id="lesson_info_edit">
+                      <div className="lesson_title">
+                        <input type="text" placeholder="Enter the lesson title" onChange={e=>setCourseTitle(e.target.value)} value={courseTitle} />
+                      </div>
+                      <div className="lesson_duration">
+                        <input type="number" placeholder="Enter the duration in minutes" onChange={e=>setCourseDuration(e.target.value)} value={courseDuration}/>
+                      </div>
+                      <div className="lesson_actions add_btn add_btn_2">
+                        <button onClick={() => setIsAdd(false)} style={{ background: "#f51b0b" }}>Cancel</button>
+                        <button onClick={addLesson}>Add new lesson</button>
+                      </div>
+                    </div>
+                  </div>
+                  : <></>
+              }
+              {
+                lessons?.map((lesson, index) => {
+                  return (<LessonCard key={index} lesson={lesson} />
+                  )
+                })
+              }
+            </div>
             {
               courseCard ?
                 <>

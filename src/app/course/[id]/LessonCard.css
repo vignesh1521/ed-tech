@@ -1,0 +1,119 @@
+.lesson_container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+.lessons_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header_title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.add_btn button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.add_btn button:hover {
+    background-color: #0056b3;
+}
+
+.add_btn_2 {
+    margin-top: 10px;
+}
+
+
+.lesson {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px 20px;
+    display: grid;
+    margin-top: 10px;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 20px;
+    background-color: #fafafa;
+}
+
+.lesson_info {
+    display: flex;
+    flex-direction: column;
+}
+
+.lesson_title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.lesson_info input {
+    font-size: 16px;
+    font-weight: normal;
+    width: 100%;
+    border: 1px solid #555;
+    border-radius: 8px;
+    padding: 5px;
+}
+
+.lesson_duration {
+    font-size: 1rem;
+    color: #555;
+}
+
+.lesson_actions {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.lesson_actions span {
+    color: #007bff;
+    cursor: pointer;
+    font-weight: 500;
+    transition: text-decoration 0.2s;
+}
+
+.lesson_actions span:hover {
+    text-decoration: underline;
+}
+
+.lesson_actions button {
+    color: #ffffff;
+}
+
+.edit {
+    background-color: #f5c827;
+    padding: 5px 20px;
+    border-radius: 8px;
+
+}
+
+.delete {
+    background-color: #f52727;
+    padding: 5px 20px;
+    border-radius: 8px;
+}
+
+
+.lesson_container .save {
+    background-color: #1eb630;
+    padding: 5px 20px;
+    border-radius: 8px;
+}

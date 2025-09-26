@@ -19,10 +19,9 @@ const apolloServer = new ApolloServer({
         currentUser = jwt.verify(token.replace("Bearer ", ""), secret) as Token_Type;
       } catch (e) {
         console.log(e);
-        throw new AuthenticationError("Invalid or expired token");
+        throw new AuthenticationError("Authentication required");
       }
     }
-
     return {
       user: currentUser,
       users,
